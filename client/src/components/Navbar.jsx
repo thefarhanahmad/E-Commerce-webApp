@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="bg-green-400 flex gap-4 h-16 justify-between px-6 items-center">
+    <div className="bg-green-400 w-full flex gap-4 h-16 justify-between px-6 items-center">
       {/* icon */}
       <span>ShoppingCart</span>
 

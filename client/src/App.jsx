@@ -13,7 +13,7 @@ const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 
 function App() {
   return (
-    <div className="text-center bg-red-500">
+    <div className="text-center ">
       {/* Navbar */}
       <Navbar />
 
@@ -24,6 +24,8 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/order" element={<Orders />} />
+          {/* <Route path="/shipping" element={<Orders />} /> */}
+          {/* <Route path="/product/:id" element={<Orders />} /> */}
           <Route path="/admin/dashboard-admin" element={<AdminDashboard />} />
         </Routes>
       </Suspense>
