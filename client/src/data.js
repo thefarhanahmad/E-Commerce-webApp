@@ -96,3 +96,31 @@ export const cartPrices = {
   discount: 400,
   total: 4920,
 };
+
+// orders items
+export const orderItems = [
+  {
+    id: "24538932008",
+    amount: 2789,
+    quantity: 2,
+    discount: 526,
+    status: "processing",
+    action: "view",
+  },
+  {
+    id: "095388789",
+    amount: 2789,
+    quantity: 1,
+    discount: 263,
+    status: "processing",
+    action: "view",
+  },
+  {
+    id: "485303993",
+    amount: 2789,
+    quantity: 3,
+    discount: 909,
+    status: "processing",
+    action: "view",
+  },
+];

@@ -3,8 +3,8 @@ import { FaCirclePlus } from "react-icons/fa6";
 
 const ProductCard = ({ name, image, price, addToCart }) => {
   return (
-    <div className="bg-white relative group  flex flex-col gap-2 p-2 ">
-      <div className="w-44 h-[70%]">
+    <div className="bg-white relative group w-[25%] flex flex-col gap-2 p-2 ">
+      <div className="w-full h-[70%]">
         <img className="w-full h-full object-cover" src={image} alt="item" />
       </div>
       <div className="">
