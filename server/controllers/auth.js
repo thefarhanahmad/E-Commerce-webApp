@@ -6,7 +6,8 @@ const jwt = require("jsonwebtoken");
 const signupUser = async (req, res, next) => {
   try {
     // fetching data
-    const { name, email, gender, dob, password } = req.body;
+    // console.log("fething data from body")
+    const { name, email, gender, dob, password, role, restaurant } = req.body;
 
     // validation
     if (!name || !email || !password || !gender || !dob) {
@@ -33,10 +34,14 @@ const signupUser = async (req, res, next) => {
       name: name,
       email: email,
       gender: gender,
+      role,
+      restaurant,
       dob: dob,
       password: hashedPassword,
       avatar: `https://api.dicebear.com/8.x/pixel-art/svg?seed=${name}&hair=short01,short02,short03,short04,short05`,
     });
+
+    user.password = undefined;
 
     // if created user send response
     return res.status(201).json({
@@ -46,12 +51,7 @@ const signupUser = async (req, res, next) => {
       userEmail: user.email,
     });
   } catch (error) {
-    return res.status(400).json({
-      success: false,
-      message: "error while singup user",
-      error: error,
-    });
-    // next(error);
+    next(error);
   }
 };
 
@@ -62,12 +62,18 @@ const loginUser = async (req, res, next) => {
     const { email, password } = req.body;
 
     // validation
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "all fields are required",
+      });
+    }
+
     const userExists = await User.findOne({ email });
     if (!userExists) {
       return res.status(400).json({
         success: false,
         message: "user not exists, try to signup",
-        error: error,
       });
     }
 
@@ -79,7 +85,6 @@ const loginUser = async (req, res, next) => {
       return res.status(400).json({
         success: false,
         message: "password doesn't match",
-        error: error,
       });
     }
 
@@ -87,6 +92,7 @@ const loginUser = async (req, res, next) => {
     const payload = {
       id: userExists._id,
       email: userExists.email,
+      role: userExists.role,
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
@@ -96,18 +102,30 @@ const loginUser = async (req, res, next) => {
     // Set JWT as cookie
     res.cookie("token", token, { httpOnly: true });
 
+    // return response
     return res.status(201).json({
       success: true,
       message: "User loggedIn successful",
       token: token,
     });
   } catch (error) {
-    return res.status(400).json({
-      success: false,
-      message: "error while login user",
-      error: error,
-    });
+    next(error);
   }
 };
 
-module.exports = { signupUser, loginUser };
+// get logged in user details
+const getUserDetails = async (req, res, next) => {
+  try {
+    const user = req.user;
+
+    const userDetails = await User.findById(user.id).select("-password").exec();
+    return res.status(200).json({
+      message: "user fetched",
+      user: userDetails,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { signupUser, loginUser, getUserDetails };

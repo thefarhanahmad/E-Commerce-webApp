@@ -19,8 +19,15 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["user", "admin"],
-      default: "user",
+      enum: ["user", "vendor"], // Only allow 'user' or 'vendor'
+      default: "user", // Default role is 'user'
+    },
+    // Additional fields for vendors
+    restaurant: {
+      type: String,
+      required: function () {
+        return this.role === "vendor"; // Required only if role is 'vendor'
+      },
     },
     gender: {
       type: String,
